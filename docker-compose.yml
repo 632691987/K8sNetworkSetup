@@ -1,0 +1,54 @@
+version: '2'
+services:
+
+################################################ k8s-master01 ##############################################
+  k8s-master01:
+    container_name: k8s-master01
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: k8s-master01:1.0
+    ports:
+      - 8082:8080
+    networks:
+      k8s-network:
+        ipv4_address: 10.5.0.2
+################################################ k8s-master01 ##############################################
+
+
+################################################ k8s-slave01 ##############################################
+  k8s-slave01:
+    container_name: k8s-slave01
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: k8s-slave01:1.0
+    ports:
+      - 8083:8080
+    networks:
+      k8s-network:
+        ipv4_address: 10.5.0.3
+################################################ k8s-slave01 ##############################################
+
+################################################ k8s-slave02 ##############################################
+  k8s-slave02:
+    container_name: k8s-slave02
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: k8s-slave02:1.0
+    ports:
+      - 8084:8080
+    networks:
+      k8s-network:
+        ipv4_address: 10.5.0.4
+################################################ k8s-slave02 ##############################################
+
+
+networks:
+  k8s-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
